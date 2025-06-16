@@ -1,6 +1,4 @@
-Voici un fichier `README.md` prêt à être utilisé dans ton dossier `archi-tp/`. Il documente la structure du projet, les objectifs par question, et les instructions de simulation.
 
----
 
 ```markdown
 # TP Architecture des Ordinateurs – Groupe 2

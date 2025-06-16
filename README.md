@@ -80,7 +80,7 @@ gtkwave wave.vcd
 
 ## Auteur
 
-Projet réalisé par **\[Nzau Lumendo Ulrich & Mukabi Ngombo Nelson & Lungi Selemani Josué & Mugaruka Tshioka Jeff]**, Groupe 2
+Projet réalisé par **Nzau Lumendo Ulrich & Mukabi Ngombo Nelson & Lungi Selemani Josué & Mugaruka Tshioka Jeff**, Groupe 2
 Encadrant : Ass. William M. Mutombo
 Cours : Architecture des Ordinateurs, 1ICE
 

@@ -1,53 +1,39 @@
-`timescale 1ns/1ps  // Échelle de temps pour la simulation
-
-module tb_mux4to1;
+`timescale 1ns/1ps
+module mux4to1_tb;
     // Déclaration des signaux de test
-    reg s0, s1;                   // lignes de sélection (bits de contrôle)
-    reg d0, d1, d2, d3;           // entrées de données du multiplexeur
-    wire y;                       // sortie connectée au multiplexeur
+    reg  I0, I1, I2, I3;      // entrées de test (1 bit chacune)
+    reg  [1:0] S;             // sélecteur de test sur 2 bits
+    wire Y;                   // fil pour la sortie du multiplexeur
 
-    // Instanciation du module multiplexeur sous test (Unit Under Test : UUT)
+    // Instanciation du module multiplexeur 4:1 (Unité sous test UUT)
     mux4to1 uut (
-        .s0(s0),
-        .s1(s1),
-        .d0(d0),
-        .d1(d1),
-        .d2(d2),
-        .d3(d3),
-        .y(y)
+        .I0(I0),
+        .I1(I1),
+        .I2(I2),
+        .I3(I3),
+        .S(S),
+        .Y(Y)
     );
 
-    // Moniteur pour afficher les changements (console)
+    // Procédure de test initiale
     initial begin
-        $display("Time\t S1 S0 \t d3 d2 d1 d0 \t Y");
-        $monitor("%g\t   %b  %b   \t %b  %b  %b  %b   \t %b",
-                 $time, s1, s0,    d3, d2, d1, d0,    y);
-    end
+        $display("I0 I1 I2 I3 | S  | Y");             // en-tête de affichage
+        $display("------------------------");
 
-    // Scénario de test principal
-    initial begin
-        // Cas 1 : première configuration des entrées
-        d0 = 0; d1 = 1; d2 = 0; d3 = 1;   // attribuer certaines valeurs aux entrées
-        // Tester toutes les combinaisons de selecteurs pour ce jeu de données
-        s1 = 0; s0 = 0; #10;  // attente de 10 ns
-        s0 = 1;        #10;
-        s1 = 1; s0 = 0; #10;
-        s0 = 1;        #10;
+        // Scénario 1 : affecter des valeurs spécifiques aux entrées, puis balayer S
+        {I3, I2, I1, I0} = 4'b0110;  // I3=0, I2=1, I1=1, I0=0
+        S = 2'b00; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
+        S = 2'b01; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
+        S = 2'b10; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
+        S = 2'b11; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
 
-        // Cas 2 : changer la configuration des entrées
-        d0 = 1; d1 = 0; d2 = 1; d3 = 0;   // nouveau jeu de valeurs pour les entrées
-        // Tester à nouveau toutes les combinaisons de s1,s0
-        s1 = 0; s0 = 0; #10;
-        s0 = 1;        #10;
-        s1 = 1; s0 = 0; #10;
-        s0 = 1;        #10;
+        // Scénario 2 : changer les entrées et recommencer le balayage
+        {I3, I2, I1, I0} = 4'b1001;  // I3=1, I2=0, I1=0, I0=1
+        S = 2'b00; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
+        S = 2'b01; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
+        S = 2'b10; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
+        S = 2'b11; #10; $display("%b  %b  %b  %b | %b  | %b", I0, I1, I2, I3, S, Y);
 
-        $finish;  // Fin de la simulation
-    end
-
-    // Génération du fichier de formes d'onde (dump VCD)
-    initial begin
-        $dumpfile("mux4to1.vcd");       // nom du fichier de dump
-        $dumpvars(0, tb_mux4to1);       // enregistre toutes les variables du testbench
+        $finish;  // fin de la simulation
     end
 endmodule
